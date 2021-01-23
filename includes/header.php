@@ -118,7 +118,16 @@
                                         <a href="#"><i class="fa fa-money"></i> Income<span class="fa arrow"></span></a>
                                         <ul class="nav nav-second-level">
                                             <li>
-                                                <a href="insurance.php"><i class="fa fa-money"></i> Insurance</a>
+                                                <a href="#"><i class="fa fa-money"></i> Insurance<span class="fa arrow"></span></a>
+                                                <ul class="nav nav-second-level">
+                                                    <li>
+                                                        <a href="insurance.php"><i class="fa fa-money"></i> Premium Recieved</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="indemnity.php"><i class="fa fa-credit-card"></i> Indemnity/Compensation Received </a>
+                                                    </li>
+
+                                                </ul>
                                             </li>
                                             <li>
                                                 <a href="#"><i class="fa fa-money"></i> Tithe<span class="fa arrow"></span></a>

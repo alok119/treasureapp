@@ -152,9 +152,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         $data_to_store['branch_name'] = $_POST['memb_branch'];
         $data_to_store['band_name'] = $_POST['memb_band'];
         $data_to_store['Amount_Paid'] = $_POST['actual-tithe'];
-        $data_to_store['Payment_Type'] = 'Tithe';
+        $data_to_store['Payment_Type'] = 'Premium Payment';
         $data_to_store['payment_mode'] = $_POST['paymode'];
-        $data_to_store['payment_description'] = "Tithe for ". $_POST['duration'];
+        $data_to_store['payment_description'] = "Premium Payment for ". $_POST['duration'];
         $data_to_store['date_received'] = date('Y-m-d H:i:s');
         $data_to_store['date_received_no_time'] = date('Y-m-d');
         $data_to_store['recusername'] = $_SESSION['username']; //<!--assign the user in the post-->
@@ -215,13 +215,13 @@ require_once 'includes/header.php';
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Post Tithe</h2>
+            <h2 class="page-header">Post Insurance</h2>
         </div>
 
     </div>
     <?php include('./includes/flash_messages.php') ?>
     <form class="form" action="" method="post"  id="tithe_form" enctype="multipart/form-data">
-        <?php  include_once('./forms/tithe_post.php'); ?>
+        <?php  include_once('./forms/insurance.php'); ?>
     </form>
 </div>
 
@@ -256,6 +256,85 @@ require_once 'includes/header.php';
             limit : 50
         });
     });
+
+    $(document).on("change", "#other_payment", function(e){
+        e.preventDefault();
+        try{
+            let other_payment = $("#other_payment").val();
+            $.ajax({
+                url: "auto.php",
+                type: "post",
+                dataType: "json",
+                data: {
+                    other_payment: other_payment
+                },
+                success: function(data){
+                    let other_payment_sub = "";
+                    other_payment_sub ="<option value='select'>Select Payment Sub</option>";
+
+                    $.each(data, function (key,value) {
+                        other_payment_sub += "<option value="+ value.ChartNote + ">"+ value.ChartNote +"</option>";
+                    });
+                    $("#other_payment_sub").html(other_payment_sub);
+                }
+            });
+        } catch (e) {
+
+        }
+
+    });
+    $(document).on("change", "#other_payment_sub", function(e){
+        //e.preventDefault();
+        try{
+            let other_payment_sub = $("#other_payment_sub").val();
+            $.ajax({
+                url: "auto.php",
+                type: "post",
+                dataType: "json",
+                data: {
+                    other_payment_sub: other_payment_sub
+                },
+                success: function(data){
+                    let category = "";
+                    category ="<option value='select'>Select Category</option>";
+
+                    $.each(data, function (key,value) {
+                        category += "<option value="+ value.Name +">"+ value.Name +"</option>";
+                    });
+                    $("#category").html(category);
+                }
+            });
+        } catch (e) {
+
+        }
+
+    });
+    let myName = document.getElementById('memb_id');
+    let currentValue;
+    myName.addEventListener('click', function() {
+        currentValue = $("#memb_phone").val();
+        document.getElementById('memb_dob').value = currentValue;
+        //alert(currentValue);
+        let dob;
+        dob = new Date(currentValue);
+        let today = new Date();
+        let age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
+        let newAge;
+        //$('#age').html(age+' years old');
+        if (age < 70 ){
+            newAge = '9000';
+        }
+        else if(age >= 70 || age < 80){
+            newAge = '15000';
+        }
+        else {
+            newAge = '25000';
+        }
+        document.getElementById('amount2pay').value = newAge;
+    }, false);
+
+
+
 </script>
 <script type="text/javascript">
 

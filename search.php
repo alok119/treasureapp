@@ -9,6 +9,7 @@
                   .trim($row['surname']).' '
                   .trim($row['othernames']).' '
                   .trim($row['mobile_no']).' '
+                  .trim($row['dob']).' '
                   .str_replace(" ", "_", trim($row['current_band'])).' '
                   .str_replace(" ", "_", trim($row['branchname']));
 

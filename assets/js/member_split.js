@@ -5,8 +5,8 @@ function member_split()
     {
 
         //alert(mysearchquery);
-    var member_det = document.getElementById('typeahead').value;
-    var arr = member_det.split(" ");
+        var member_det = document.getElementById('typeahead').value;
+        var arr = member_det.split(" ");
         if(arr.length>5) {
             if (arr.length ==8) {
 

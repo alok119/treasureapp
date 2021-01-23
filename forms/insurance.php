@@ -22,18 +22,6 @@ $qnt = array('1kqty'=>'1kqty_bal', '5hqty'=>'5hqty_bal', '2hqty'=>'2hqty_bal', '
 ?>
 <fieldset>
     <div class="form-group">
-        <label class="control-label " for="paymode">Mode of Payment</label>
-        <select class="form-control" id="paymode"
-                name="paymode" onchange="select_mode(this.value)">
-            <option></option>
-            <option>POS</option>
-            <option>Cash</option>
-            <option>Cheque</option>
-            <option>Direct Lodgement</option>
-        </select>
-    </div>
-
-    <div class="form-group">
         <label for="memb_search">Search Member *</label>
         <input type="text" name="typeahead" id="typeahead" class="typeahead tt-query"
                autocomplete="off" spellcheck="false" placeholder="Type your Search Query"
@@ -57,21 +45,29 @@ $qnt = array('1kqty'=>'1kqty_bal', '5hqty'=>'5hqty_bal', '2hqty'=>'2hqty_bal', '
         <label for="memb_band">Member Branch:</label>
         <input type="text" class="form-control" id="memb_branch" name="memb_branch" readonly />
     </div>
-    <input type="hidden" class="form-control" id="memb_phone" name="memb_phone" readonly />
-    <div class="form-group">
-        <label class="control-label " for="calendar">Tithe Period</label>
-        <div class="input-group">
-            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-            <input id ="duration" name="duration" type="text" autocomplete="off"
-                   class="datepicker-here"
-                   data-language='en'
-                   data-min-view="months"
-                   data-view="months"
-                   data-date-format="MM yyyy"
-                   data-multiple-dates="100"
-                   data-multiple-dates-separator=", " required
-            />
+    <input type="hidden" class="form-control" id="memb_phone" name="memb_phone" value="" onchange="setUserID()" readonly />
+    <input type="hidden" class="form-control" id="memb_dob" name="memb_phone"  readonly />
+    <?php
+    include 'model.php';
+    $model = new Model();
+    $rows = $model->fetch_session();
+    ?>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label class="control-label " for="calendar">Premium Payment Session</label>
+            <select class="form-control" id="calendar" name="duration" >
+                <option>Select Session</option>
+                <?php
+                if (!empty($rows)):
+                    foreach ($rows as $row):?>
+                        <option value="<?= $row['session_id'];?>"> <?= $row['session_data'];?> </option>
+                    <?php endforeach; endif; ?>
+            </select>
         </div>
+    </div>
+    <label class="control-label " for="amount2pay">Amount to Pay</label>
+    <input type="text" class="form-control" id="amount2pay" name="amount2pay"  readonly />
+    <div class="form-group">
         <div class="form-group">
             <label class="control-label " for="paymode">Mode of Payment</label>
             <select class="form-control" id="paymode"
@@ -103,7 +99,7 @@ $qnt = array('1kqty'=>'1kqty_bal', '5hqty'=>'5hqty_bal', '2hqty'=>'2hqty_bal', '
                        id="<?php echo $cbid; ?>" name="<?php echo $cbid; ?>"
                        onchange="doMath.focusAmountInput(this)" />
                 <label class="custom-control-label amnt" for="<?php echo $cbid; ?>">N<?php echo $amnt; ?></label>
-                <label class="mr-sm-3" for="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <label class="mr-sm-3" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <input class="form-control amnt-input" id="<?php echo $key; ?>" name="<?php echo $key; ?>"
                        type="number" value="" onfocus="doMath.multplyDenByNumb(this)" disabled />
                 <input class="form-control" id="<?php echo $val; ?>" name="<?php echo $val; ?>"
@@ -198,7 +194,7 @@ $qnt = array('1kqty'=>'1kqty_bal', '5hqty'=>'5hqty_bal', '2hqty'=>'2hqty_bal', '
                            id="<?php echo $cbid; ?>_bal" name="<?php echo $cbid; ?>_bal"
                            onchange="doMath.focusAmountInput(this)" />
                     <label class="custom-control-label amnt" for="<?php echo $cbid; ?>_bal">N<?php echo $amnt; ?></label>
-                    <label class="mr-sm-3" for="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <label class="mr-sm-3" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <input class="form-control amnt-input" id="<?php echo $key; ?>_bal" name="<?php echo $key; ?>_bal"
                            type="number" value="" onfocus="doMath.multplyDenByNumb(this, true)" disabled />
                     <input class="form-control" id="<?php echo $val; ?>_bal" name="<?php echo $val; ?>_bal"
