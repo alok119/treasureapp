@@ -333,8 +333,6 @@ require_once 'includes/header.php';
         document.getElementById('amount2pay').value = newAge;
     }, false);
 
-
-
 </script>
 <script type="text/javascript">
 
