@@ -124,7 +124,7 @@
                                                         <a href="insurance.php"><i class="fa fa-money"></i> Premium Recieved</a>
                                                     </li>
                                                     <li>
-                                                        <a href="indemnity.php"><i class="fa fa-credit-card"></i> Indemnity/Compensation Received </a>
+                                                        <a href="#"><i class="fa fa-credit-card"></i> Indemnity/Compensation Received </a>
                                                     </li>
 
                                                 </ul>

@@ -27,41 +27,41 @@ if ($db->count >= 1) {
 
 function generate_token(){
     //if(isset($_POST['generate_token'])) {
+    $db = getDbInstance();
+    $db->where("created_for", $_SESSION['username']);
+    $row = $db->get('cashiers_login_tokens');
+
+    $token = substr(random_int(100000, 999999), 1);
+    $time= time();
+    $pretty_time = date('Y-m-d H:i:s');
+    $time = time();
+    $_SESSION['time'] = $time;
+    if ($db->count>=1) {
+
+        $data = Array (
+            "token"            => $token,
+            "date_created_raw"              => $time,
+            "date_created_pretty"           => $pretty_time,
+            "created_for"       => $_SESSION['username']
+        );
+
         $db = getDbInstance();
         $db->where("created_for", $_SESSION['username']);
-        $row = $db->get('cashiers_login_tokens');
+        $result = $db->update("cashiers_login_tokens", $data);
+        send_token_to_phone_and_email();
+    }
+    else {
+        $data = Array (
+            "token"                 => $token,
+            "date_created_raw"      => $time,
+            "date_created_pretty"   => $pretty_time,
+            "created_for"           => $_SESSION['username']
+        );
 
-        $token = substr(random_int(100000, 999999), 1);
-        $time= time();
-        $pretty_time = date('Y-m-d H:i:s');
-        $time = time();
-        $_SESSION['time'] = $time;
-        if ($db->count>=1) {
-
-            $data = Array (
-                "token"            => $token,
-                "date_created_raw"              => $time,
-                "date_created_pretty"           => $pretty_time,
-                "created_for"       => $_SESSION['username']
-            );
-
-            $db = getDbInstance();
-            $db->where("created_for", $_SESSION['username']);
-            $result = $db->update("cashiers_login_tokens", $data);
-            send_token_to_phone_and_email();
-        }
-        else {
-            $data = Array (
-                "token"                 => $token,
-                "date_created_raw"      => $time,
-                "date_created_pretty"   => $pretty_time,
-                "created_for"           => $_SESSION['username']
-            );
-
-            $db = getDbInstance();
-            $result = $db->insert("cashiers_login_tokens", $data);
-            send_token_to_phone_and_email();
-        }
+        $db = getDbInstance();
+        $result = $db->insert("cashiers_login_tokens", $data);
+        send_token_to_phone_and_email();
+    }
     //}
 }
 
@@ -80,12 +80,12 @@ function send_token_to_phone_and_email() {
         if ($db->count>=1) {
 
             $the_user = $row[0];
-             send_sms_to_phone('cashier_token', $the_user['phone'], $the_message);
-             mail(
-                 $the_user['email'],
-                 'Surulere Treasury Verification Token!',
-                 $the_message
-             );
+            send_sms_to_phone('cashier_token', $the_user['phone'], $the_message);
+            mail(
+                $the_user['email'],
+                'Surulere Treasury Verification Token!',
+                $the_message
+            );
             $_SESSION['dtkn'] = $the_token;
             if (isset($_SESSION['dtkn'])) {
                 echo $_SESSION['dtkn'];

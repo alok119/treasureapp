@@ -87,7 +87,6 @@ Class Model
     }
 
     public function calculate_Age($currentValue){
-        $currentValue = $_POST['currentValue'];
         $data = null;
         //date in mm/dd/yyyy format; or it can be in other formats as well
         $birthDate = $currentValue;
